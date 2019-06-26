@@ -205,8 +205,10 @@ class ToolBarActions():
             function = (self.actOnViewClear)
         elif action == 'quit':
             function = (self.actOnQuit)
+        elif action == 'system_shutdown':
+            function = (self.actOnSystemShutdown)
 
-        else:
+        elif not extFunction:
             LOG.warning('Unrecogzied action command: {}'.format(action))
 
         # Call an external function when triggered. If it's checkable; add state
@@ -354,6 +356,9 @@ class ToolBarActions():
 
     def actOnQuit(self,widget, state=None):
         STATUS.emit('shutdown')
+
+    def actOnSystemShutdown(self, widget, state=None):
+        ACTION.SHUT_SYSTEM_DOWN_PROMPT()
 
     def actOnAbout(self,widget, state=None):
         msg = QtWidgets.QMessageBox()
