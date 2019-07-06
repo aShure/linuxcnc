@@ -79,8 +79,10 @@ IMPORTANT: These pins will be entered later into the configurator, they should *
 
 === Getting LinuxCNC With The Plasmac Add-Ons
 
-plasmac currently requires the master branch (v2.9) of LinuxCNC.
+The minimum requirement for plasmac is LinuxCNC v2.8, although this version does NOT support the paused motion feature.
 
+LinuxCNC v2.9 or later provide full functionality.
+ 
 === If You Do Not Have Linux Installed
 
 Download an iso image from one of the following and write it to a bootable device:
@@ -96,6 +98,8 @@ This will give you a machine with the current stable (v2.7) branch of LinuxCNC, 
 === If You Have LinuxCNC v2.7
 
 You can choose between a standard package installation from the 'buildbot' or you can compile you own 'run in place' installation.
+
+[[buildbot-install]]
 
 ==== Buildbot Installation
 
@@ -133,6 +137,8 @@ $ sudo apt-get install linuxcnc
 ----
 
 Go to <<sec:testing-linuxcnc,testing the linuxCNC installation>>
+
+[[rip-install]]
 
 ==== Run In Place Installation
 
@@ -240,13 +246,27 @@ CAUTION: Do *NOT* proceed until this has been done
 
 If you are using a Mesa Electronics THCAD card for arc voltage measurement, see <<mesa-thcad,Mesa THCAD>> before proceeding
 
-Now you can run the configurator by double clicking on 'configurator.py' in the configs/by_machine/plasmac directory or by running from a terminal with the following command:
+[[buildbot-configure]]
+
+==== Add To A Buildbot Installation
+
+Now you can run the configurator by double clicking on 'configurator.py' in the /user/share/doc/linuxcnc/examples/sample-configs/by_machine/plasmac directory or by running from a terminal with the following command:
 
 ----
-$ python /path/to/configs/by_machine/plasmac/configurator.py
+$ python /user/share/doc/linuxcnc/examples/sample-configs/by_machine/plasmac/configurator.py
 ----
 
-NOTE: If this does not run make sure that the permissions for the above file allow executable.
+[[rip-configure]]
+
+==== Add To A Run In Place Installation
+
+Now you can run the configurator by double clicking on 'configurator.py' in the ~/linuxcnc-dev/configs/by_machine/plasmac directory or by running from a terminal with the following command:
+
+----
+$ python ~/linuxcnc-dev/configs/by_machine/plasmac/configurator.py
+----
+
+NOTE: If the configurator does not run make sure that the file permissions allow executable.
 
 This brings up the selection window:
 
@@ -512,6 +532,8 @@ When reversing, motion will stop when it reaches a spindle on command.
 
 When forwarding, motion can continue until the end of the path.
 
+NOTE: Paused motion is only available in LinuxCNC version 2.9 or later.
+
 === Statistics Panel
 
 This provides some statistics to help in keeping track of consumable wear and job times.
@@ -766,6 +788,8 @@ BUTTON_n_NAME       = {NAME} (the name of a custom user buttons)
 BUTTON_n_CODE       = {CODE} (the code run by a custom user button)
 -----
 
+NOTE: PAUSED-MOTION-SPEED is only valid for LinuxCNC version 2.9 or later
+
 ==== [FILTER] Section
 
 -----
@@ -1017,7 +1041,20 @@ If you wish to use this in your own sim configuration then you will need to crea
 
 == Upgrade An Existing Configuration
 
-Upgrading is first done by updating your clone of the plasmac git repo.
+Upgrading is done one of two different ways:
+
+=== Upgrade A Buildbot Installation
+
+From a terminal:
+
+----
+$ sudo apt-get update
+$ sudo apt-get dist-upgrade
+----
+
+=== Upgrade A Run In Place Installation
+
+From a terminal:
 
 ----
 $ cd ~/linuxcnc-dev
@@ -1026,15 +1063,13 @@ $ cd src
 $ make
 ----
 
-Now you can run the configurator to upgrade your configuration.
+Normally there is no reason to run the configurator after an upgrade.
 
-Run the configurator by double clicking on 'configurator.py' in the configs/by_machine/plasmac directory or by running from a terminal with the following command:
+If you have decided to change the type of installation:
 
-----
-$ python /path/to/configs/by_machine/plasmac/configurator.py
-----
+* If you currently have a working run in place installation and you want to switch to a buildbot installation then do a <<buildbot-install,buildbot installation>> then do a <<buildbot-configure,buildbot configure>> and select upgrade.
 
-NOTE: If this does not run make sure that the permissions for the above file allow executable.
+* If you currently have a working buildbot installation and you want to switch to a run in place installation then do a <<rip-install,run in place installation>> then do a <<rip-configure,run in place configure>> and select upgrade.
 
 This brings up the selection window:
 
